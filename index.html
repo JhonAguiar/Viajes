@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<title>Document</title>
+	</head>
+	<body >
+		<CANVAS id="mycanvas" height="440" width="900" style="border: 5px groove purple"></CANVAS>
+		<script>
+		/**
+		 * @author : Jhon Aguiar Moreno
+		 */
+			var canvas = document.getElementById("mycanvas");
+			var ctx = canvas.getContext("2d");
+			var img = new Image();
+			var img2 = new Image();
+			var img3 = new Image();
+			var img4 = new Image();
+
+			var millas = 6776;
+
+			var x1 = 160;
+			var y1 = 210; 
+			var x2 = 530;
+			var y2 = 60;
+
+			function convertirMillas(millas , x2, x1){
+				var maxMillas = 6776;
+				var distancia = x2 - x1;
+				var conversion = maxMillas/distancia;
+				var totalMillas = maxMillas-millas;
+				var x = millas/ conversion;
+				return x+x1;
+			}
+
+			img.src = "images/map_world.png";
+			img2.src = "images/placeholder.svg";
+			img3.src = "images/placeholder.svg";
+			img4.src = "images/airplane.svg";
+
+			img.onload = function(){
+				ctx.drawImage(img , 0 , 0 , 900 , 440);
+				cargarImagenes();
+			}
+
+			function cargarImagenes(){
+				ctx.drawImage(img2, x1, y1);
+				ctx.drawImage(img3, x2, y2);
+				pintarElementos();
+			}
+
+			function pintarElementos(){
+				//Pendiente
+				m = (y2-y1)/(x2-x1);
+
+				//Interseccion de y:
+				uno = (m)*x1;
+
+				//Encontrar b
+				b = y1 -(uno);
+
+				//Distancia x
+				var x = convertirMillas(millas , x2, x1);
+
+				var avion = x + 5;
+
+				//Ecuación de la recta
+				if (x <= x2 && x >= x1){
+					//Movimiento Linea
+					y = (m*(x)) + b;
+					//Movimiento Avión
+					air = (m*(avion)) + b;
+
+					ctx.moveTo(160,210);
+					ctx.lineTo(x,y);
+					ctx.lineWidth = 3;
+					ctx.strokeStyle = "orange";
+					ctx.stroke();
+
+					ctx.drawImage(img4, avion, air-30);
+				}else{
+					alert("Ha ocurrido un problema");
+				}
+			
+			}
+		</script>
+	</body>
+</html>
